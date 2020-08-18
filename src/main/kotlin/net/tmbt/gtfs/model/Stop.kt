@@ -14,10 +14,10 @@ enum class LocationType {
     BOARDING_AREA
 }
 
-enum class WheelchairBoarding {
+enum class Availability {
     UNKNOWN,
-    POSSIBLE,
-    NOT_POSSIBLE
+    AVAILABLE,
+    UNAVAILABLE
 }
 
 object StopTable : IdTable<String>() {
@@ -32,7 +32,7 @@ object StopTable : IdTable<String>() {
     val locationType = enumeration("location_type", LocationType::class).nullable()
     val parentStation = reference("parent_station", StopTable).nullable()
     val stopTimezone = text("stop_timezone").nullable()
-    val wheelchairBoarding = enumeration("wheelchair_boarding", WheelchairBoarding::class).nullable()
+    val wheelchairBoarding = enumeration("wheelchair_boarding", Availability::class).nullable()
     //val levelId = reference("level_id", TODO level table).nullable()
     val platformCode = text("platform_code").nullable()
 
