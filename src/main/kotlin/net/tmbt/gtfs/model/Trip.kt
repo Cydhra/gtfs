@@ -17,6 +17,7 @@ object TripTable : IdTable<String>() {
     val route = reference("route_id", RouteTable)
 
     //val service = reference("service_id", CalendarDateTable) TODO: two tables?!
+    val trip = text("trip_id")
     val headsign = text("trip_headsign").nullable()
     val shortName = text("trip_short_name").nullable()
     val direction = enumeration("direction_id", TripDirection::class).nullable()
@@ -31,6 +32,8 @@ object TripTable : IdTable<String>() {
 }
 
 class Trip(id: EntityID<String>) : Entity<String>(id) {
+    companion object : EntityClass<String, Trip>(TripTable)
+
     var route by TripTable.route
 
     //var service  by TripTable.service
