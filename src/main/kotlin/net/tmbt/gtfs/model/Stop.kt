@@ -43,19 +43,20 @@ object StopTable : IdTable<String>() {
 class Stop(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Agency>(AgencyTable)
 
-    val stopId by StopTable.stopId
-    val code by StopTable.code
-    val name by StopTable.name
-    val desc by StopTable.desc
-    val lat by StopTable.lat
-    val lon by StopTable.lon
-    val zoneId by StopTable.zoneId
-    val stopUrl by StopTable.stopUrl
-    val locationType by StopTable.locationType
-    val parentStation by Stop optionalReferencedOn StopTable.parentStation
-    val stopTimezone by StopTable.stopTimezone
-    val wheelchairBoarding by StopTable.wheelchairBoarding
-    //val levelId by StopTable.levelId
-    val platformCode by StopTable.platformCode
+    var stopId by StopTable.stopId
+    var code by StopTable.code
+    var name by StopTable.name
+    var desc by StopTable.desc
+    var lat by StopTable.lat
+    var lon by StopTable.lon
+    var zoneId by StopTable.zoneId
+    var stopUrl by StopTable.stopUrl
+    var locationType by StopTable.locationType
+    var parentStation by Stop optionalReferencedOn StopTable.parentStation
+    var stopTimezone by StopTable.stopTimezone
+    var wheelchairBoarding by StopTable.wheelchairBoarding
+
+    //var levelId by StopTable.levelId
+    var platformCode by StopTable.platformCode
 }
 
