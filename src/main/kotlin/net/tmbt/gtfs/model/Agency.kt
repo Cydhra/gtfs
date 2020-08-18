@@ -1,22 +1,20 @@
 package net.tmbt.gtfs.model
 
-import net.tmbt.gtfs.model.AgencyTable.nullable
 import org.jetbrains.exposed.dao.*
 import org.jetbrains.exposed.dao.id.*
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object AgencyTable : IdTable<String>() {
     val agencyId = varchar("agency_id", 4096).entityId()
 
-    val agencyName = text("agency_name")
-    val agencyUrl = text("agency_url")
+    val name = text("agency_name")
+    val url = text("agency_url")
     val timeZone = text("agency_timezone")
-    val agencyLang = text("agency_lang").nullable()
-    val agencyPhone = text("agency_phone").nullable()
-    val agencyFareUrl = text("agency_fare_url").nullable()
-    val agencyEmail = text("agency_email").nullable()
+    val language = text("agency_lang").nullable()
+    val phone = text("agency_phone").nullable()
+    val fareUrl = text("agency_fare_url").nullable()
+    val email = text("agency_email").nullable()
     override val id: Column<EntityID<String>>
         get() = agencyId
 }
@@ -24,11 +22,11 @@ object AgencyTable : IdTable<String>() {
 class Agency(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Agency>(AgencyTable);
 
-    var agencyName by AgencyTable.agencyName
-    var agencyUrl by AgencyTable.agencyUrl
+    var name by AgencyTable.name
+    var url by AgencyTable.url
     var timeZone by AgencyTable.timeZone
-    var agencyLang by AgencyTable.agencyLang
-    var agencyPhone by AgencyTable.agencyPhone
-    var agencyFareUrl by AgencyTable.agencyFareUrl
-    var agencyEmail by AgencyTable.agencyEmail
+    var lang by AgencyTable.language
+    var phone by AgencyTable.phone
+    var fareUrl by AgencyTable.fareUrl
+    var email by AgencyTable.email
 }
