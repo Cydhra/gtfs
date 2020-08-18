@@ -8,7 +8,6 @@ import org.jetbrains.exposed.sql.Column
 
 object AgencyTable : IdTable<String>() {
     val agencyId = varchar("agency_id", 4096).entityId()
-
     val name = text("agency_name")
     val url = text("agency_url")
     val timeZone = text("agency_timezone")
@@ -16,6 +15,7 @@ object AgencyTable : IdTable<String>() {
     val phone = text("agency_phone").nullable()
     val fareUrl = text("agency_fare_url").nullable()
     val email = text("agency_email").nullable()
+
     override val id: Column<EntityID<String>>
         get() = agencyId
 }
