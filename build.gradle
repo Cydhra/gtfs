@@ -19,7 +19,7 @@ buildscript {
 
 apply plugin: 'kotlin'
 
-group 'de.tmbt'
+group 'net.tmbt'
 version '1.0-SNAPSHOT'
 
 repositories {

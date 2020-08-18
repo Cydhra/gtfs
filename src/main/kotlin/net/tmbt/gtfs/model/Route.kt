@@ -1,4 +1,4 @@
-package de.tmbt.gtfs.model
+package net.tmbt.gtfs.model
 
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
