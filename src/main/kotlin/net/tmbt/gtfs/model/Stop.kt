@@ -11,7 +11,16 @@ enum class LocationType {
     STATION,
     ENTRANCE,
     GENERIC,
-    BOARDING_AREA
+    BOARDING_AREA;
+
+    companion object {
+        fun byOrdinalOrNull(ordinal: Int?): LocationType? {
+            return if (ordinal == null)
+                null
+            else
+                values()[ordinal]
+        }
+    }
 }
 
 enum class Availability {
