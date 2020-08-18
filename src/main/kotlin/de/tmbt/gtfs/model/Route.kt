@@ -18,13 +18,13 @@ enum class RouteType {
 }
 
 enum class PickupMode {
-    // can board anywhere
+    //! can board anywhere
     CONTINOUS,
-    // no continous pickup
+    //! no continous pickup
     NONE,
-    // must phone agency
+    //! must phone agency
     PHONE,
-    // coordinate with driver
+    //! coordinate with driver
     DRIVER
 }
 
