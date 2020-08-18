@@ -1,5 +1,6 @@
 package net.tmbt.gtfs.model
 
+import net.tmbt.gtfs.util.ByOrdinal
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -13,20 +14,15 @@ enum class LocationType {
     GENERIC,
     BOARDING_AREA;
 
-    companion object {
-        fun byOrdinalOrNull(ordinal: Int?): LocationType? {
-            return if (ordinal == null)
-                null
-            else
-                values()[ordinal]
-        }
-    }
+    companion object : ByOrdinal<LocationType>(values())
 }
 
 enum class Availability {
     UNKNOWN,
     AVAILABLE,
-    UNAVAILABLE
+    UNAVAILABLE;
+
+    companion object : ByOrdinal<Availability>(values())
 }
 
 object StopTable : IdTable<String>() {
