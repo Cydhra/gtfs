@@ -1,7 +1,5 @@
 package net.tmbt.gtfs.model
 
-import net.tmbt.gtfs.model.TripTable.entityId
-import net.tmbt.gtfs.model.TripTable.nullable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
@@ -31,14 +29,15 @@ object TripTable : IdTable<String>() {
 }
 
 class Trip(id: EntityID<String>) : Entity<String>(id) {
-    val route  by TripTable.route
-    //val service  by TripTable.service
-    val trip  by TripTable.trip
-    val headsign  by TripTable.headsign
-    val shortName  by TripTable.shortName
-    val direction  by TripTable.direction
-    val block  by TripTable.block
-    val shape  by TripTable.shape
-    val wheelchair  by TripTable.wheelchair
-    val bikesAllowed  by TripTable.bikesAllowed
+    var route by TripTable.route
+
+    //var service  by TripTable.service
+    var trip by TripTable.trip
+    var headsign by TripTable.headsign
+    var shortName by TripTable.shortName
+    var direction by TripTable.direction
+    var block by TripTable.block
+    var shape by TripTable.shape
+    var wheelchair by TripTable.wheelchair
+    var bikesAllowed by TripTable.bikesAllowed
 }

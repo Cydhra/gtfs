@@ -1,7 +1,5 @@
 package net.tmbt.gtfs.model
 
-import net.tmbt.gtfs.model.RouteTable.entityId
-import net.tmbt.gtfs.model.RouteTable.nullable
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -56,16 +54,16 @@ object RouteTable : IdTable<String>() {
 class Route(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Route>(RouteTable)
 
-    val routeId by RouteTable.routeId
-    val agency by Agency optionalBackReferencedOn RouteTable.agency
-    val shortName by RouteTable.shortName
-    val longName by RouteTable.longName
-    val description by RouteTable.description
-    val type by RouteTable.type
-    val url by RouteTable.url
-    val color by RouteTable.color
-    val textColor by RouteTable.textColor
-    val sortOrder by RouteTable.sortOrder
-    val continousPickup by RouteTable.continousPickup
-    val continousDropOff by RouteTable.continousDropOff
+    var routeId by RouteTable.routeId
+    var agency by Agency optionalReferencedOn RouteTable.agency
+    var shortName by RouteTable.shortName
+    var longName by RouteTable.longName
+    var description by RouteTable.description
+    var type by RouteTable.type
+    var url by RouteTable.url
+    var color by RouteTable.color
+    var textColor by RouteTable.textColor
+    var sortOrder by RouteTable.sortOrder
+    var continousPickup by RouteTable.continousPickup
+    var continousDropOff by RouteTable.continousDropOff
 }
