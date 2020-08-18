@@ -30,7 +30,7 @@ enum class PickupMode {
 
 object RouteTable : IdTable<String>() {
     val routeId = text("route_id").entityId()
-    val agencyId = reference("agency_id", AgencyTable).nullable()
+    val agency = reference("agency_id", AgencyTable).nullable()
     val shortName = text("route_short_name").nullable()
     val longName = text("route_long_name").nullable()
     val description = text("route_desc").nullable()
