@@ -1,5 +1,9 @@
 package net.tmbt.gtfs.model
 
+import net.tmbt.gtfs.model.RouteTable.entityId
+import net.tmbt.gtfs.model.RouteTable.nullable
+import org.jetbrains.exposed.dao.Entity
+import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
@@ -20,10 +24,13 @@ enum class RouteType {
 enum class PickupMode {
     //! can board anywhere
     CONTINOUS,
+
     //! no continous pickup
     NONE,
+
     //! must phone agency
     PHONE,
+
     //! coordinate with driver
     DRIVER
 }
@@ -44,4 +51,21 @@ object RouteTable : IdTable<String>() {
 
     override val id: Column<EntityID<String>>
         get() = routeId
+}
+
+class Route(id: EntityID<String>) : Entity<String>(id) {
+    companion object : EntityClass<String, Route>(RouteTable)
+
+    val routeId by RouteTable.routeId
+    val agency by Agency optionalBackReferencedOn RouteTable.agency
+    val shortName by RouteTable.shortName
+    val longName by RouteTable.longName
+    val description by RouteTable.description
+    val type by RouteTable.type
+    val url by RouteTable.url
+    val color by RouteTable.color
+    val textColor by RouteTable.textColor
+    val sortOrder by RouteTable.sortOrder
+    val continousPickup by RouteTable.continousPickup
+    val continousDropOff by RouteTable.continousDropOff
 }

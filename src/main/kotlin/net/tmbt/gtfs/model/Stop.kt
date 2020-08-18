@@ -41,7 +41,7 @@ object StopTable : IdTable<String>() {
 }
 
 class Stop(id: EntityID<String>) : Entity<String>(id) {
-    companion object : EntityClass<String, Agency>(AgencyTable)
+    companion object : EntityClass<String, Stop>(StopTable)
 
     var stopId by StopTable.stopId
     var code by StopTable.code
