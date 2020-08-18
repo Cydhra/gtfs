@@ -22,11 +22,11 @@ enum class WheelchairBoarding {
 
 object StopTable : IdTable<String>() {
     val stopId = text("stop_id").entityId()
-    val stopCode = text("stop_code").nullable()
-    val stopName = text("stop_name").nullable()
-    val stopDesc = text("stop_desc").nullable()
-    val stopLat = decimal("stop_lat", 10, 7).nullable()
-    val stopLon = decimal("stop_lon", 10, 7).nullable()
+    val code = text("stop_code").nullable()
+    val name = text("stop_name").nullable()
+    val desc = text("stop_desc").nullable()
+    val lat = decimal("stop_lat", 10, 7).nullable()
+    val lon = decimal("stop_lon", 10, 7).nullable()
     val zoneId = text("zone_id").nullable()
     val stopUrl = text("stop_url").nullable()
     val locationType = enumeration("location_type", LocationType::class).nullable()
@@ -44,11 +44,11 @@ class Stop(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Agency>(AgencyTable)
 
     val stopId by StopTable.stopId
-    val stopCode by StopTable.stopCode
-    val stopName by StopTable.stopName
-    val stopDesc by StopTable.stopDesc
-    val stopLat by StopTable.stopLat
-    val stopLon by StopTable.stopLon
+    val code by StopTable.code
+    val name by StopTable.name
+    val desc by StopTable.desc
+    val lat by StopTable.lat
+    val lon by StopTable.lon
     val zoneId by StopTable.zoneId
     val stopUrl by StopTable.stopUrl
     val locationType by StopTable.locationType
