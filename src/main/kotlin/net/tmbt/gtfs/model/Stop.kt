@@ -52,7 +52,7 @@ class Stop(id: EntityID<String>) : Entity<String>(id) {
     val zoneId by StopTable.zoneId
     val stopUrl by StopTable.stopUrl
     val locationType by StopTable.locationType
-    val parentStation by StopTable.parentStation
+    val parentStation by Stop optionalReferencedOn StopTable.parentStation
     val stopTimezone by StopTable.stopTimezone
     val wheelchairBoarding by StopTable.wheelchairBoarding
     //val levelId by StopTable.levelId
