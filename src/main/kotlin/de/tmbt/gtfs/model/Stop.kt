@@ -1,4 +1,4 @@
-package net.tmbt.gtfs.model
+package de.tmbt.gtfs.model
 
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass

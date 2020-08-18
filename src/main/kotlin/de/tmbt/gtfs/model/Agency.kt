@@ -1,8 +1,9 @@
-package net.tmbt.gtfs.model
+package de.tmbt.gtfs.model
 
-import org.jetbrains.exposed.dao.*
-import org.jetbrains.exposed.dao.id.*
+import org.jetbrains.exposed.dao.Entity
+import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
 
 object AgencyTable : IdTable<String>() {
