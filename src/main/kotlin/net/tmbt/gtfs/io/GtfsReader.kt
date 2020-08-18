@@ -3,7 +3,7 @@ package net.tmbt.gtfs.io
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.apache.logging.log4j.LogManager
-import org.jetbrains.exposed.dao.Entity
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import java.io.Closeable
 import java.io.InputStream
@@ -15,7 +15,7 @@ import java.io.InputStream
  *
  * @param T the type of GTFS entity that is produced by this reader implementation
  */
-abstract class GtfsReader<out T : Entity<String>>(private val inputStream: InputStream) : Closeable {
+abstract class GtfsReader<ID : Comparable<ID>>(private val inputStream: InputStream) : Closeable {
     companion object {
         private val logger = LogManager.getLogger()
     }
@@ -27,9 +27,11 @@ abstract class GtfsReader<out T : Entity<String>>(private val inputStream: Input
     /**
      * Read the next available entity from the provided [inputStream]
      */
-    fun nextEntity(): T {
+    fun nextEntity(): EntityID<ID> {
+        assert(TransactionManager.currentOrNull() != null)
+
         val record = this.recordIterator.next()
-        return this.createEntity(gtfsHeader.map { column -> column to record[column] }.toMap())
+        return this.insertEntity(gtfsHeader.map { column -> column to record[column] }.toMap())
     }
 
     /**
@@ -37,10 +39,10 @@ abstract class GtfsReader<out T : Entity<String>>(private val inputStream: Input
      *
      * @return a list of all read entities
      */
-    fun readRemainingEntities(): List<T> {
+    fun readRemainingEntities(): List<EntityID<ID>> {
         assert(TransactionManager.currentOrNull() != null)
 
-        val results = mutableListOf<T>()
+        val results = mutableListOf<EntityID<ID>>()
         while (recordIterator.hasNext()) {
             results += this.nextEntity()
         }
@@ -54,7 +56,7 @@ abstract class GtfsReader<out T : Entity<String>>(private val inputStream: Input
      *
      * @param entries a key-value store providing the column entries for a [T] entity
      */
-    protected abstract fun createEntity(entries: Map<String, String>): T
+    protected abstract fun insertEntity(entries: Map<String, String>): EntityID<ID>
 
     override fun close() {
         this.inputStream.close()
