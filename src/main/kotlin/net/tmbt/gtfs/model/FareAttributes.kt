@@ -1,6 +1,6 @@
 package net.tmbt.gtfs.model
 
-import net.tmbt.gtfs.model.FareAttributeTable.nullable
+import net.tmbt.gtfs.util.ByOrdinal
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -9,7 +9,9 @@ import org.jetbrains.exposed.sql.Column
 
 enum class PaymentMethod {
     ONBOARD,
-    BEFORE_BOARDING
+    BEFORE_BOARDING;
+
+    companion object : ByOrdinal<PaymentMethod>(values())
 }
 
 object FareAttributeTable : IdTable<String>() {

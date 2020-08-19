@@ -1,5 +1,6 @@
 package net.tmbt.gtfs.model
 
+import net.tmbt.gtfs.util.ByOrdinal
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
@@ -7,7 +8,9 @@ import org.jetbrains.exposed.sql.Column
 enum class ExceptionType {
     INVALID,
     SERVICE_ADDED,
-    SERVICE_REMOVED
+    SERVICE_REMOVED;
+
+    companion object : ByOrdinal<ExceptionType>(values())
 }
 
 object CalendarDateTable : IdTable<String>() {

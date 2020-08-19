@@ -1,5 +1,6 @@
 package net.tmbt.gtfs.model
 
+import net.tmbt.gtfs.util.ByOrdinal
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -16,12 +17,14 @@ enum class RouteType {
     AERIAL_LIFT,
     FUNICULAR,
     TROLLEYBUS,
-    MONORAIL
+    MONORAIL;
+
+    companion object : ByOrdinal<RouteType>(values())
 }
 
 enum class PickupMode {
     //! can board anywhere
-    CONTINOUS,
+    CONTINUOUS,
 
     //! no continous pickup
     NONE,
@@ -30,7 +33,9 @@ enum class PickupMode {
     PHONE,
 
     //! coordinate with driver
-    DRIVER
+    DRIVER;
+
+    companion object : ByOrdinal<PickupMode>(values());
 }
 
 object RouteTable : IdTable<String>() {
@@ -64,6 +69,6 @@ class Route(id: EntityID<String>) : Entity<String>(id) {
     var color by RouteTable.color
     var textColor by RouteTable.textColor
     var sortOrder by RouteTable.sortOrder
-    var continousPickup by RouteTable.continousPickup
-    var continousDropOff by RouteTable.continousDropOff
+    var continuousPickup by RouteTable.continousPickup
+    var continuousDropOff by RouteTable.continousDropOff
 }

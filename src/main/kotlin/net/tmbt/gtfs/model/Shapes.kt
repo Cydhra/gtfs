@@ -1,6 +1,5 @@
 package net.tmbt.gtfs.model
 
-import net.tmbt.gtfs.model.StopTable.nullable
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.*
@@ -50,4 +49,4 @@ class Shape(val id: String) {
     }
 }
 
-class LatLon(val latitude: BigDecimal, val longitude: BigDecimal)
+data class LatLon(val latitude: BigDecimal, val longitude: BigDecimal)
