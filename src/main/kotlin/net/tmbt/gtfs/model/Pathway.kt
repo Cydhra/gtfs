@@ -5,6 +5,7 @@ import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
 
 object PathwayTable : IdTable<String>() {
+
     override val id: Column<EntityID<String>>
         get() = TODO("Not yet implemented")
 
