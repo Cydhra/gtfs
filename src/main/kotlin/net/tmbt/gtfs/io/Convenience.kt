@@ -1,6 +1,6 @@
 package net.tmbt.gtfs.io
 
-import com.github.marschall.memoryfilesystem.MemoryFileSystemBuilder
+import com.google.common.jimfs.Jimfs
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.io.InputStream
@@ -38,7 +38,7 @@ fun importGtfsDataset(folder: Path) {
  */
 fun importGtfsDataset(url: URL, inMemory: Boolean = false) {
     if (inMemory) {
-        MemoryFileSystemBuilder.newEmpty().build().use { fileSystem ->
+        Jimfs.newFileSystem().use { fileSystem ->
             val tempFile = fileSystem.getPath("gtfsdataset.zip")
             val outputStream = Files.newOutputStream(tempFile)
             url.openStream().use { it.copyTo(outputStream) }
