@@ -3,7 +3,6 @@ package net.tmbt.gtfs.io
 import net.tmbt.gtfs.model.AgencyTable
 import net.tmbt.gtfs.model.FareAttributeTable
 import net.tmbt.gtfs.model.PaymentMethod
-import net.tmbt.gtfs.model.StopTable
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -14,7 +13,7 @@ class GtfsFareAttributeReader(inputStream: InputStream) : GtfsReader<String>(inp
         return transaction {
             val entityId = EntityID(
                 entries["fare_id"] ?: error("cannot create fare attribute without id"),
-                StopTable
+                FareAttributeTable
             )
 
             FareAttributeTable.insert { row ->

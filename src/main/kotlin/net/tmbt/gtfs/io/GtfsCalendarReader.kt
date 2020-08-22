@@ -2,7 +2,6 @@ package net.tmbt.gtfs.io
 
 import net.tmbt.gtfs.model.CalendarTable
 import net.tmbt.gtfs.model.DailyAvailability
-import net.tmbt.gtfs.model.StopTable
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -13,7 +12,7 @@ class GtfsCalendarReader(inputStream: InputStream) : GtfsReader<String>(inputStr
         return transaction {
             val entityId = EntityID(
                 entries["service_id"] ?: error("cannot create calendar without id"),
-                StopTable
+                CalendarTable
             )
 
             CalendarTable.insert { row ->
