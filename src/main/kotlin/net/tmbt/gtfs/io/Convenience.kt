@@ -19,7 +19,9 @@ import java.nio.file.Path
  * @param folder a [File] pointing to a directory that contains a full GTFS dataset
  */
 fun importGtfsDataset(folder: Path) {
-    importGtfsDataset(FileSystems.newFileSystem(folder))
+    FileSystems.newFileSystem(folder).use { fs ->
+        importGtfsDataset(fs)
+    }
 }
 
 /**
