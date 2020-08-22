@@ -39,7 +39,6 @@ enum class PickupMode {
 }
 
 object RouteTable : IdTable<String>() {
-    val routeId = text("route_id").entityId()
     val agency = reference("agency_id", AgencyTable).nullable()
     val shortName = text("route_short_name").nullable()
     val longName = text("route_long_name").nullable()
@@ -52,14 +51,13 @@ object RouteTable : IdTable<String>() {
     val continousPickup = enumeration("continous_pickup", PickupMode::class).nullable()
     val continousDropOff = enumeration("continous_drop_off", PickupMode::class).nullable()
 
-    override val id: Column<EntityID<String>>
-        get() = routeId
+    override val id: Column<EntityID<String>> = text("route_id").entityId()
 }
 
 class Route(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Route>(RouteTable)
 
-    var routeId by RouteTable.routeId
+    var routeId by RouteTable.id
     var agency by Agency optionalReferencedOn RouteTable.agency
     var shortName by RouteTable.shortName
     var longName by RouteTable.longName
