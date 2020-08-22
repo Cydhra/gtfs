@@ -48,8 +48,8 @@ object RouteTable : IdTable<String>() {
     val color = text("route_color").nullable()
     val textColor = text("route_text_color").nullable()
     val sortOrder = integer("route_sort_order").nullable()
-    val continousPickup = enumeration("continous_pickup", PickupMode::class).nullable()
-    val continousDropOff = enumeration("continous_drop_off", PickupMode::class).nullable()
+    val continuousPickup = enumeration("continuous_pickup", PickupMode::class).nullable()
+    val continuousDropOff = enumeration("continuous_drop_off", PickupMode::class).nullable()
 
     override val id: Column<EntityID<String>> = text("route_id").entityId()
 }
@@ -67,6 +67,6 @@ class Route(id: EntityID<String>) : Entity<String>(id) {
     var color by RouteTable.color
     var textColor by RouteTable.textColor
     var sortOrder by RouteTable.sortOrder
-    var continuousPickup by RouteTable.continousPickup
-    var continuousDropOff by RouteTable.continousDropOff
+    var continuousPickup by RouteTable.continuousPickup
+    var continuousDropOff by RouteTable.continuousDropOff
 }
