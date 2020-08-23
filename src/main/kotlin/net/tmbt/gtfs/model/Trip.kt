@@ -18,7 +18,6 @@ object TripTable : IdTable<String>() {
     val route = reference("route_id", RouteTable)
 
     //val service = reference("service_id", CalendarDateTable) TODO: two tables?!
-    val trip = text("trip_id")
     val headsign = text("trip_headsign").nullable()
     val shortName = text("trip_short_name").nullable()
     val direction = enumeration("direction_id", TripDirection::class).nullable()
