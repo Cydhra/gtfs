@@ -6,6 +6,9 @@ buildscript {
         jvm_target = '1.8'
         log4j2_version = '2.13.3'
         jimfs_version = '1.1'
+
+        h2_version = '1.4.200'
+        junit_version = '5.6.2'
     }
 
     repositories {
@@ -37,6 +40,19 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4j2_version
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2_version
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4j2_version
+
+    testImplementation group: 'com.h2database', name: 'h2', version: h2_version
+    testImplementation group: 'org.jetbrains.exposed', name: 'exposed-jdbc', version: exposed_version
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit_version
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junit_version
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junit_version
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
