@@ -4,8 +4,10 @@ import net.tmbt.gtfs.model.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.exists
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import org.testng.Assert
+import org.testng.annotations.Test
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 
 internal class ConvenienceKtTest {
 
@@ -34,17 +36,17 @@ internal class ConvenienceKtTest {
                 TranslationTable,
                 AttributionTable
             ).forEach { table ->
-                Assertions.assertTrue(table.exists())
+                Assert.assertTrue(table.exists())
             }
         }
     }
 
-    @Test
+    @Test(dependsOnMethods = ["testDatabaseSetup"])
     fun testImportGtfsDatasetPath() {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = ["testDatabaseSetup"])
     fun testImportGtfsDatasetUrl() {
 
     }

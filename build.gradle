@@ -8,7 +8,7 @@ buildscript {
         jimfs_version = '1.1'
 
         h2_version = '1.4.200'
-        junit_version = '5.6.2'
+        ng_version = '7.3.0'
     }
 
     repositories {
@@ -43,13 +43,12 @@ dependencies {
 
     testImplementation group: 'com.h2database', name: 'h2', version: h2_version
     testImplementation group: 'org.jetbrains.exposed', name: 'exposed-jdbc', version: exposed_version
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit_version
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junit_version
-    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junit_version
+    testImplementation group: 'org.testng', name: 'testng', version: ng_version
+
 }
 
 test {
-    useJUnitPlatform()
+    useTestNG()
     testLogging {
         events "passed", "skipped", "failed"
     }
