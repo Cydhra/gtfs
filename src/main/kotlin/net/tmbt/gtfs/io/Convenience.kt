@@ -1,6 +1,8 @@
 package net.tmbt.gtfs.io
 
 import com.google.common.jimfs.Jimfs
+import net.tmbt.gtfs.model.*
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.io.InputStream
@@ -9,6 +11,36 @@ import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
+
+/**
+ * Create all missing GTFS tables and add all missing columns to existing tables to match the latest layout expected by
+ * the parser.
+ * This method uses JDBC metadata and thus might be a bit slow, but can be used to create or update a database once every
+ * application startup.
+ */
+fun updateDatabase() {
+    transaction {
+        SchemaUtils.createMissingTablesAndColumns(
+            AgencyTable,
+            LevelTable,
+            StopTable,
+            RouteTable,
+            CalendarTable,
+            CalendarDateTable,
+            ShapeTable,
+            TripTable,
+            StopTimeTable,
+            FareAttributeTable,
+            FareRuleTable,
+            FrequencyTable,
+            TransferTable,
+            PathwayTable,
+            FeedInfoTable,
+            TranslationTable,
+            AttributionTable
+        )
+    }
+}
 
 /**
  * Import an entire folder containing all files required by the GTFS specification.
