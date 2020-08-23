@@ -5,7 +5,6 @@ import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
-import org.jetbrains.exposed.sql.Column
 
 enum class LocationType {
     STOP,
@@ -26,7 +25,7 @@ enum class Availability {
 }
 
 object StopTable : IdTable<String>() {
-    val stopId = text("stop_id").entityId()
+    override val id = text("stop_id").entityId()
     val code = text("stop_code").nullable()
     val name = text("stop_name").nullable()
     val desc = text("stop_desc").nullable()
@@ -40,15 +39,12 @@ object StopTable : IdTable<String>() {
     val wheelchairBoarding = enumeration("wheelchair_boarding", Availability::class).nullable()
     //val levelId = reference("level_id", TODO level table).nullable()
     val platformCode = text("platform_code").nullable()
-
-    override val id: Column<EntityID<String>>
-        get() = TODO("Not yet implemented")
 }
 
 class Stop(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Stop>(StopTable)
 
-    var stopId by StopTable.stopId
+    var stopId by StopTable.id
     var code by StopTable.code
     var name by StopTable.name
     var desc by StopTable.desc

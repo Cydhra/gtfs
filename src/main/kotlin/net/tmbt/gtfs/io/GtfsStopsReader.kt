@@ -17,7 +17,7 @@ class GtfsStopsReader(inputStream: InputStream) : GtfsReader<String>(inputStream
             )
 
             StopTable.insert { row ->
-                row[stopId] = entityId
+                row[this.id] = entityId
                 row[code] = entries["stop_code"]
                 row[name] = entries["stop_name"]
                 row[desc] = entries["stop_desc"]
