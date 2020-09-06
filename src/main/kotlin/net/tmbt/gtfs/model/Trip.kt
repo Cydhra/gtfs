@@ -64,9 +64,9 @@ class Trip(id: EntityID<String>) : Entity<String>(id) {
             if (serviceIdCache != null) {
                 serviceIdCache =
                     if (serviceIdCalendar != null)
-                        ServiceIdentifier.fromCalendar(serviceIdCalendar!!)
+                        fromCalendar(serviceIdCalendar!!)
                     else
-                        ServiceIdentifier.fromCalendarDate(serviceIdCalendarDate!!)
+                        fromCalendarDate(serviceIdCalendarDate!!)
             }
             return serviceIdCache!!
         }
