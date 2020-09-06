@@ -38,8 +38,7 @@ object StopTable : IdTable<String>() {
     val parentStation = reference("parent_station", StopTable).nullable()
     val stopTimezone = varchar("stop_timezone", MAX_IDENTIFIER_LENGTH).nullable()
     val wheelchairBoarding = enumeration("wheelchair_boarding", Availability::class).nullable()
-
-    //val levelId = reference("level_id", TODO level table).nullable()
+    val levelId = reference("level_id", LevelTable).nullable()
     val platformCode = varchar("platform_code", MAX_IDENTIFIER_LENGTH).nullable()
 }
 
@@ -57,8 +56,7 @@ class Stop(id: EntityID<String>) : Entity<String>(id) {
     var parentStation by Stop optionalReferencedOn StopTable.parentStation
     var stopTimezone by StopTable.stopTimezone
     var wheelchairBoarding by StopTable.wheelchairBoarding
-
-    //var levelId by StopTable.levelId
+    var levelId by Level optionalReferencedOn StopTable.levelId
     var platformCode by StopTable.platformCode
 }
 

@@ -1,6 +1,7 @@
 package net.tmbt.gtfs.io
 
 import net.tmbt.gtfs.model.Availability
+import net.tmbt.gtfs.model.LevelTable
 import net.tmbt.gtfs.model.LocationType
 import net.tmbt.gtfs.model.StopTable
 import org.jetbrains.exposed.dao.id.EntityID
@@ -29,7 +30,7 @@ class GtfsStopsReader(inputStream: InputStream) : GtfsReader<String>(inputStream
                 row[parentStation] = entries["parent_station"]?.let { EntityID(it, StopTable) }
                 row[stopTimezone] = entries["stop_timezone"]
                 row[wheelchairBoarding] = Availability.byOrdinalOrNull(entries["wheelchair_boarding"]?.toInt())
-                //row[StopTable.levelId] = entries[""]
+                row[levelId] = entries["level_id"]?.let { EntityID(it, LevelTable) }
                 row[platformCode] = entries["platform_code"]
             }
 
