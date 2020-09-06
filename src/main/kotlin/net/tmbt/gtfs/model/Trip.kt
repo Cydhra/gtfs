@@ -8,6 +8,7 @@ import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.or
 import java.util.*
 
 enum class TripDirection {
@@ -29,9 +30,11 @@ object TripTable : IdTable<String>() {
     val wheelchair = enumeration("wheelchair_accessible", Availability::class).nullable()
     val bikesAllowed = enumeration("bikes_allowed", Availability::class).nullable()
 
-
     override val id: Column<EntityID<String>> = text("trip_id").entityId()
 
+    init {
+        check { serviceCalendar.isNotNull() or serviceCalendarDate.isNotNull() }
+    }
 }
 
 class Trip(id: EntityID<String>) : Entity<String>(id) {
