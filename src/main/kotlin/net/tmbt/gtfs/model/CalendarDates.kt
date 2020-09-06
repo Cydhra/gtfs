@@ -1,6 +1,8 @@
 package net.tmbt.gtfs.model
 
 import net.tmbt.gtfs.util.ByOrdinal
+import org.jetbrains.exposed.dao.Entity
+import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
@@ -21,4 +23,8 @@ object CalendarDateTable : IdTable<String>() {
     override val id: Column<EntityID<String>>
         get() = serviceId
 
+}
+
+class CalendarDate(id: EntityID<String>) : Entity<String>(id) {
+    companion object : EntityClass<String, CalendarDate>(CalendarDateTable)
 }
