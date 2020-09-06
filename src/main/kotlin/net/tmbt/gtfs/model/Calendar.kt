@@ -15,7 +15,8 @@ enum class DailyAvailability {
 }
 
 object CalendarTable : IdTable<String>() {
-    val serviceId = text("service_id").entityId()
+    override val id: Column<EntityID<String>> = varchar("service_id", MAX_IDENTIFIER_LENGTH).entityId()
+
     val monday = enumeration("monday", DailyAvailability::class)
     val tuesday = enumeration("tuesday", DailyAvailability::class)
     val wednesday = enumeration("wednesday", DailyAvailability::class)
@@ -23,19 +24,13 @@ object CalendarTable : IdTable<String>() {
     val friday = enumeration("friday", DailyAvailability::class)
     val saturday = enumeration("saturday", DailyAvailability::class)
     val sunday = enumeration("sunday", DailyAvailability::class)
-
-    val startDate = text("start_date")
-    val endDate = text("end_date")
-
-    override val id: Column<EntityID<String>>
-        get() = serviceId
-
+    val startDate = varchar("start_date", MAX_IDENTIFIER_LENGTH)
+    val endDate = varchar("end_date", MAX_IDENTIFIER_LENGTH)
 }
 
 class Calendar(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Calendar>(CalendarTable)
 
-    var serviceId by CalendarTable.serviceId
     var monday by CalendarTable.monday
     var tuesday by CalendarTable.tuesday
     var wednesday by CalendarTable.wednesday

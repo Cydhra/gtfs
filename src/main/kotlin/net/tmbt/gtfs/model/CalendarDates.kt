@@ -16,13 +16,10 @@ enum class ExceptionType {
 }
 
 object CalendarDateTable : IdTable<String>() {
-    val serviceId = text("service_id").entityId()
-    val date = text("date")
+    override val id: Column<EntityID<String>> = varchar("service_id", MAX_IDENTIFIER_LENGTH).entityId()
+
+    val date = varchar("date", MAX_IDENTIFIER_LENGTH)
     val exceptionType = enumeration("execption_type", ExceptionType::class)
-
-    override val id: Column<EntityID<String>>
-        get() = serviceId
-
 }
 
 class CalendarDate(id: EntityID<String>) : Entity<String>(id) {

@@ -7,17 +7,15 @@ import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
 
 object AgencyTable : IdTable<String>() {
-    val agencyId = varchar("agency_id", 4096).entityId()
-    val name = text("agency_name")
-    val url = text("agency_url")
-    val timeZone = text("agency_timezone")
-    val language = text("agency_lang").nullable()
-    val phone = text("agency_phone").nullable()
-    val fareUrl = text("agency_fare_url").nullable()
-    val email = text("agency_email").nullable()
+    override val id: Column<EntityID<String>> = varchar("agency_id", MAX_IDENTIFIER_LENGTH).entityId()
 
-    override val id: Column<EntityID<String>>
-        get() = agencyId
+    val name = varchar("agency_name", MAX_TEXT_LENGTH)
+    val url = varchar("agency_url", MAX_TEXT_LENGTH)
+    val timeZone = varchar("agency_timezone", MAX_IDENTIFIER_LENGTH)
+    val language = varchar("agency_lang", MAX_IDENTIFIER_LENGTH).nullable()
+    val phone = varchar("agency_phone", MAX_IDENTIFIER_LENGTH).nullable()
+    val fareUrl = varchar("agency_fare_url", MAX_TEXT_LENGTH).nullable()
+    val email = varchar("agency_email", MAX_IDENTIFIER_LENGTH).nullable()
 }
 
 class Agency(id: EntityID<String>) : Entity<String>(id) {

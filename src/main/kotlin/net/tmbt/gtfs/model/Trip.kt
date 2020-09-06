@@ -19,18 +19,18 @@ enum class TripDirection {
 }
 
 object TripTable : IdTable<String>() {
+    override val id: Column<EntityID<String>> = varchar("trip_id", MAX_IDENTIFIER_LENGTH).entityId()
+
     val route = reference("route_id", RouteTable)
     val serviceCalendar = reference("service_id_cal", CalendarTable).nullable()
     val serviceCalendarDate = reference("service_id_cal_date", CalendarDateTable).nullable()
-    val headsign = text("trip_headsign").nullable()
-    val shortName = text("trip_short_name").nullable()
+    val headsign = varchar("trip_headsign", MAX_TEXT_LENGTH).nullable()
+    val shortName = varchar("trip_short_name", MAX_TEXT_LENGTH).nullable()
     val direction = enumeration("direction_id", TripDirection::class).nullable()
-    val block = text("block_id").nullable()
+    val block = varchar("block_id", MAX_IDENTIFIER_LENGTH).nullable()
     val shape = reference("shape_id", ShapeTable).nullable()
     val wheelchair = enumeration("wheelchair_accessible", Availability::class).nullable()
     val bikesAllowed = enumeration("bikes_allowed", Availability::class).nullable()
-
-    override val id: Column<EntityID<String>> = text("trip_id").entityId()
 
     init {
         check { serviceCalendar.isNotNull() or serviceCalendarDate.isNotNull() }

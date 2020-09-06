@@ -25,26 +25,27 @@ enum class Availability {
 }
 
 object StopTable : IdTable<String>() {
-    override val id = text("stop_id").entityId()
-    val code = text("stop_code").nullable()
-    val name = text("stop_name").nullable()
-    val desc = text("stop_desc").nullable()
+    override val id = varchar("stop_id", MAX_IDENTIFIER_LENGTH).entityId()
+
+    val code = varchar("stop_code", MAX_IDENTIFIER_LENGTH).nullable()
+    val name = varchar("stop_name", MAX_TEXT_LENGTH).nullable()
+    val desc = varchar("stop_desc", MAX_TEXT_LENGTH).nullable()
     val lat = decimal("stop_lat", 10, 7).nullable()
     val lon = decimal("stop_lon", 10, 7).nullable()
-    val zoneId = text("zone_id").nullable()
-    val stopUrl = text("stop_url").nullable()
+    val zoneId = varchar("zone_id", MAX_IDENTIFIER_LENGTH).nullable()
+    val stopUrl = varchar("stop_url", MAX_TEXT_LENGTH).nullable()
     val locationType = enumeration("location_type", LocationType::class).nullable()
     val parentStation = reference("parent_station", StopTable).nullable()
-    val stopTimezone = text("stop_timezone").nullable()
+    val stopTimezone = varchar("stop_timezone", MAX_IDENTIFIER_LENGTH).nullable()
     val wheelchairBoarding = enumeration("wheelchair_boarding", Availability::class).nullable()
+
     //val levelId = reference("level_id", TODO level table).nullable()
-    val platformCode = text("platform_code").nullable()
+    val platformCode = varchar("platform_code", MAX_IDENTIFIER_LENGTH).nullable()
 }
 
 class Stop(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, Stop>(StopTable)
 
-    var stopId by StopTable.id
     var code by StopTable.code
     var name by StopTable.name
     var desc by StopTable.desc

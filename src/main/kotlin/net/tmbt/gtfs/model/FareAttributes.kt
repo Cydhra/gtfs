@@ -15,23 +15,19 @@ enum class PaymentMethod {
 }
 
 object FareAttributeTable : IdTable<String>() {
-    val fareId = text("fare_id").entityId()
+    override val id: Column<EntityID<String>> = varchar("fare_id", MAX_IDENTIFIER_LENGTH).entityId()
+
     val price = float("price")
-    val currency = text("currency_type")
+    val currency = varchar("currency_type", MAX_IDENTIFIER_LENGTH)
     val paymentMethod = enumeration("payment_method", PaymentMethod::class)
     val transfers = integer("transfers").nullable()
     val agency = reference("agency_id", AgencyTable)
     val transferDuration = integer("transfer_duration").nullable()
-
-    override val id: Column<EntityID<String>>
-        get() = fareId
-
 }
 
 class FareAttribute(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, FareAttribute>(FareAttributeTable)
 
-    var fareId by FareAttributeTable.fareId
     var price by FareAttributeTable.price
     var currency by FareAttributeTable.currency
     var paymentMethod by FareAttributeTable.paymentMethod

@@ -16,10 +16,10 @@ enum class TimeMode {
 object StopTimeTable : IntIdTable() {
     val trip = reference("trip_id", TripTable)
     val stop = reference("stop_id", StopTable)
-    val arrivalTime = text("arrival_time").nullable()
-    val departureTime = text("departure_time").nullable()
+    val arrivalTime = varchar("arrival_time", MAX_IDENTIFIER_LENGTH).nullable()
+    val departureTime = varchar("departure_time", MAX_IDENTIFIER_LENGTH).nullable()
     val stopSequence = integer("stop_sequence")
-    val headSign = text("stop_headsign").nullable()
+    val headSign = varchar("stop_headsign", MAX_TEXT_LENGTH).nullable()
     val pickupType = enumeration("pickup_type", PickupMode::class).nullable()
     val dropOffType = enumeration("drop_off_type", PickupMode::class).nullable()
     val continuousPickup = enumeration("continuous_pickup", PickupMode::class).nullable()

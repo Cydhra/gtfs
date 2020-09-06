@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.math.BigDecimal
 
 object ShapeTable : IdTable<String>() {
-    override val id: Column<EntityID<String>> = text("shape_id").entityId()
+    override val id: Column<EntityID<String>> = varchar("shape_id", MAX_IDENTIFIER_LENGTH).entityId()
 
     val lat = decimal("shape_pt_lat", 10, 7).nullable()
     val lon = decimal("shape_pt_lon", 10, 7).nullable()

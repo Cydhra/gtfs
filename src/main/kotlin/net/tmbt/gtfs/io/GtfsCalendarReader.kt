@@ -16,7 +16,7 @@ class GtfsCalendarReader(inputStream: InputStream) : GtfsReader<String>(inputStr
             )
 
             CalendarTable.insert { row ->
-                row[serviceId] = entityId
+                row[id] = entityId
                 row[monday] = DailyAvailability.byOrdinalOrNull(entries["monday"]?.toInt())
                     ?: error("missing monday in calendar entry")
                 row[tuesday] = DailyAvailability.byOrdinalOrNull(entries["tuesday"]?.toInt())

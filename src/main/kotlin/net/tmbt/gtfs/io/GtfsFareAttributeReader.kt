@@ -17,7 +17,7 @@ class GtfsFareAttributeReader(inputStream: InputStream) : GtfsReader<String>(inp
             )
 
             FareAttributeTable.insert { row ->
-                row[fareId] = entityId
+                row[id] = entityId
                 row[price] = entries["price"]?.toFloat() ?: error("cannot create fare attribute without price")
                 row[currency] = entries["currency_type"] ?: error("cannot create fare attribute without currency type")
                 row[paymentMethod] = entries["payment_method"]?.let { PaymentMethod.byOrdinalOrNull(it.toInt()) }
