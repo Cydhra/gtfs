@@ -20,9 +20,13 @@ abstract class GtfsReader<ID : Comparable<ID>>(private val inputStream: InputStr
         private val logger = LogManager.getLogger()
     }
 
-    private val parser = CSVParser(inputStream.reader(), CSVFormat.RFC4180)
+    private val parser = CSVParser(inputStream.reader(), CSVFormat.RFC4180.withHeader())
     private val recordIterator = parser.iterator()
-    private val gtfsHeader = recordIterator.next()
+    private val gtfsHeader: List<String>
+
+    init {
+        gtfsHeader = parser.headerMap.keys.toList()
+    }
 
     /**
      * Read the next available entity from the provided [inputStream]
