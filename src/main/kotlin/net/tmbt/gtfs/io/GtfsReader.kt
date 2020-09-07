@@ -1,5 +1,6 @@
 package net.tmbt.gtfs.io
 
+import net.tmbt.gtfs.util.UnicodeBOMInputStream
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import org.apache.logging.log4j.LogManager
@@ -20,7 +21,8 @@ abstract class GtfsReader<ID : Comparable<ID>>(private val inputStream: InputStr
         private val logger = LogManager.getLogger()
     }
 
-    private val parser = CSVParser(inputStream.reader(), CSVFormat.RFC4180.withHeader())
+    private val parser =
+        CSVParser(UnicodeBOMInputStream(inputStream).skipBOM().reader(), CSVFormat.RFC4180.withHeader())
     private val recordIterator = parser.iterator()
     private val gtfsHeader: List<String>
 
