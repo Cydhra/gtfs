@@ -37,7 +37,10 @@ abstract class GtfsReader<ID : Comparable<ID>>(private val inputStream: InputStr
         assert(TransactionManager.currentOrNull() != null)
 
         val record = this.recordIterator.next()
-        return this.insertEntity(gtfsHeader.map { column -> column to record[column] }.toMap())
+        return this.insertEntity(gtfsHeader
+            .mapNotNull { column -> (column to record[column]?.takeIf { it.isNotEmpty() }).takeIf { it.second != null } }
+            .map { it.first to it.second!! }
+            .toMap())
     }
 
     /**
