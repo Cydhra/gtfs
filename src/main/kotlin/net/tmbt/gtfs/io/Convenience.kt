@@ -122,7 +122,7 @@ fun importGtfsDataset(fileSystem: FileSystem) {
         readEntitiesFrom(fileSystem, "trips.txt", ::GtfsTripReader, required = true)
         readEntitiesFrom(fileSystem, "stop_times.txt", ::GtfsStopTimeReader, required = true)
         readEntitiesFrom(fileSystem, "fare_attributes.txt", ::GtfsFareAttributeReader)
-        // fare rules reader // opt
+        readEntitiesFrom(fileSystem, "fare_rules.txt", ::GtfsFareRuleReader)
         readEntitiesFrom(fileSystem, "frequencies.txt", ::GtfsFrequenciesReader)
         // transfers reader // opt
         // pathways reader // opt
