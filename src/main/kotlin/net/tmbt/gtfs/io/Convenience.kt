@@ -128,7 +128,7 @@ fun importGtfsDataset(fileSystem: FileSystem) {
         // pathways reader // opt
         // feed info reader TODO: this is not a table, is it?
         // translations // opt
-        // attributions // opt
+        readEntitiesFrom(fileSystem, "attributions.txt", ::GtfsAttributionReader)
     }
 }
 
