@@ -1,7 +1,6 @@
 package net.tmbt.gtfs.io
 
 import net.tmbt.gtfs.model.FrequencyTable
-import net.tmbt.gtfs.model.TripTable
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -10,7 +9,8 @@ import java.io.InputStream
 class GtfsFrequenciesReader(inputStream: InputStream) : GtfsReader<String>(inputStream) {
     override fun insertEntity(entries: Map<String, String>): EntityID<String> {
         return transaction {
-            val entityId = EntityID(entries["trip_id"] ?: error("cannot create frequency without trip id"), TripTable)
+            val entityId =
+                EntityID(entries["trip_id"] ?: error("cannot create frequency without trip id"), FrequencyTable)
 
             FrequencyTable.insert { row ->
                 row[startTime] = entries["start_time"] ?: error("cannot create frequency without start_time")

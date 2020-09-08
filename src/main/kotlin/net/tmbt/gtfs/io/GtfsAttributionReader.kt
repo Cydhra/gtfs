@@ -15,7 +15,7 @@ class GtfsAttributionReader(inputStream: InputStream) : GtfsReader<String>(input
         return transaction {
             val entityId = EntityID(
                 entries["attribution_id"] ?: error("cannot create attribution without id"),
-                AgencyTable
+                AttributionTable
             )
 
             AttributionTable.insert { row ->
