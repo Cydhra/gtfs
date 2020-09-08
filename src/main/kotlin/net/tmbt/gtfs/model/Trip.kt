@@ -22,8 +22,13 @@ object TripTable : IdTable<String>() {
     override val id: Column<EntityID<String>> = varchar("trip_id", MAX_IDENTIFIER_LENGTH).entityId()
 
     val route = reference("route_id", RouteTable)
+
+    /** referencing an id from [CalendarTable]. If null, there must be an entry in [serviceCalendarDate] column */
     val serviceCalendar = reference("service_id_cal", CalendarTable).nullable()
+
+    /** referencing an id from [CalendarDateTable]. If null, there must be an entry in [serviceCalendar] column */
     val serviceCalendarDate = reference("service_id_cal_date", CalendarDateTable).nullable()
+
     val headsign = varchar("trip_headsign", MAX_TEXT_LENGTH).nullable()
     val shortName = varchar("trip_short_name", MAX_TEXT_LENGTH).nullable()
     val direction = enumeration("direction_id", TripDirection::class).nullable()
