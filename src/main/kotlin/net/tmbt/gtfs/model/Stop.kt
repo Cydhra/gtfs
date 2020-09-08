@@ -36,6 +36,12 @@ object StopTable : IdTable<String>() {
     val stopUrl = varchar("stop_url", MAX_TEXT_LENGTH).nullable()
     val locationType = enumeration("location_type", LocationType::class).nullable()
     val parentStation = reference("parent_station", StopTable).nullable()
+
+    /**
+     * weak temporary storage for parents that have not yet been inserted into database. Whenever a stop is inserted,
+     * an update on the table is performed that inserts strong references into [parentStation]
+     */
+    internal val weakParent = varchar("weak_parent_station", MAX_IDENTIFIER_LENGTH).nullable()
     val stopTimezone = varchar("stop_timezone", MAX_IDENTIFIER_LENGTH).nullable()
     val wheelchairBoarding = enumeration("wheelchair_boarding", Availability::class).nullable()
     val levelId = reference("level_id", LevelTable).nullable()
