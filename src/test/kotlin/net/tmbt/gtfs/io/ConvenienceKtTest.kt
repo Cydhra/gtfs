@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.testng.Assert
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
@@ -15,9 +16,17 @@ import java.nio.file.StandardCopyOption
  */
 internal class ConvenienceKtTest {
 
+    lateinit var dataSetPath: File
+
     @BeforeClass
     fun initDatabase() {
         Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver", user = "root", password = "")
+        dataSetPath = createTempFile("kvv", ".zip")
+        dataSetPath.deleteOnExit()
+
+        javaClass.classLoader.getResourceAsStream("testdata.zip")!!.use {
+            Files.copy(it, dataSetPath.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        }
     }
 
     @Test
@@ -51,13 +60,6 @@ internal class ConvenienceKtTest {
 
     @Test(dependsOnMethods = ["testDatabaseSetup"])
     fun testImportGtfsDatasetPath() {
-        val dataSetPath = createTempFile("kvv", ".zip")
-        dataSetPath.deleteOnExit()
-
-        javaClass.classLoader.getResourceAsStream("testdata.zip")!!.use {
-            Files.copy(it, dataSetPath.toPath(), StandardCopyOption.REPLACE_EXISTING)
-        }
-
         transaction {
             updateDatabase()
 
@@ -69,6 +71,12 @@ internal class ConvenienceKtTest {
 
     @Test(dependsOnMethods = ["testDatabaseSetup"])
     fun testImportGtfsDatasetUrl() {
+        transaction {
+            updateDatabase()
 
+            importGtfsDataset(dataSetPath.toPath().toUri().toURL(), inMemory = true)
+
+            // TODO test presence of dataset
+        }
     }
 }
