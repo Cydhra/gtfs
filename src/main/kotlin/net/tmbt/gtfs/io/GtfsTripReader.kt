@@ -25,9 +25,9 @@ class GtfsTripReader(inputStream: InputStream) : GtfsReader<String>(inputStream)
                         CalendarDateTable.select { CalendarDateTable.id eq serviceId }.firstOrNull()
                             ?: throw IllegalStateException("cannot find Calendar or CalendarDate with id \"$serviceId\"")
 
-                    row[serviceCalendarDate] = calendarDateEntity[id]
+                    row[serviceCalendarDate] = calendarDateEntity[CalendarDateTable.id]
                 } else {
-                    row[serviceCalendar] = calendarEntity[id]
+                    row[serviceCalendar] = calendarEntity[CalendarTable.id]
                 }
 
                 row[headsign] = entries["trip_headsign"]
