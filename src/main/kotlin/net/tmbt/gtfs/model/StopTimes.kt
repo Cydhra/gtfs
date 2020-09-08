@@ -26,10 +26,6 @@ object StopTimeTable : IntIdTable() {
     val continuous = enumeration("continuous_drop_off", PickupMode::class).nullable()
     val shapeDist = float("shape_dist_traveled").nullable()
     val timePoint = enumeration("timepoint", TimeMode::class).nullable()
-
-    init {
-        uniqueIndex(trip, stop)
-    }
 }
 
 class StopTime(id: EntityID<Int>) : IntEntity(id) {
