@@ -113,7 +113,7 @@ fun importGtfsDataset(url: URL, inMemory: Boolean = false) {
 fun importGtfsDataset(fileSystem: FileSystem) {
     transaction {
         readEntitiesFrom(fileSystem, "agency.txt", ::GtfsAgencyReader, required = true)
-        // level reader //opt
+        readEntitiesFrom(fileSystem, "levels.txt", ::GtfsLevelReader)
         readEntitiesFrom(fileSystem, "stops.txt", ::GtfsStopsReader, required = true)
         readEntitiesFrom(fileSystem, "routes.txt", ::GtfsRoutesReader, required = true)
         readEntitiesFrom(fileSystem, "calendar.txt", ::GtfsCalendarReader)
