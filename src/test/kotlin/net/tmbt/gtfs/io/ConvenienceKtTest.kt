@@ -23,7 +23,7 @@ internal class ConvenienceKtTest {
     @BeforeClass
     fun initDatabase() {
         Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver", user = "root", password = "")
-        dataSetPath = createTempFile("kvv", ".zip")
+        dataSetPath = createTempFile("testdata", ".zip")
         dataSetPath.deleteOnExit()
 
         javaClass.classLoader.getResourceAsStream("testdata.zip")!!.use {
