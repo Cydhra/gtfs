@@ -13,8 +13,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 /**
- * Create all missing GTFS tables and add all missing columns to existing tables to match the latest layout expected by
- * the parser.
+ * Create all missing GTFS tables and add all missing columns to existing tables in order to match the latest layout expected by
+ * the parser. The tables are created using the thread-local database connection.
  * This method uses JDBC metadata and thus might be a bit slow, but can be used to create or update a database once every
  * application startup.
  */
@@ -45,6 +45,11 @@ fun updateDatabase() {
 /**
  * Import an entire folder containing all files required by the GTFS specification.
  *
+ * This method assumes that all files are present if required by specification and are properly named.
+ * See also [the GTFS reference](https://developers.google.com/transit/gtfs/reference#dataset_files).
+ * In particular, it does not verify whether required files are actually present, nor does it check conditions of
+ * conditionally required files.
+ *
  * The generated SQL entities are not returned.
  * Use the [GtfsReader] implementations to obtain the generated entities.
  *
@@ -63,6 +68,11 @@ fun importGtfsDataset(folder: Path) {
  * If [inMemory] is false, the file is downloaded into a temporary file and then imported.
  * Otherwise, it is downloaded into memory and loaded from there.
  * The latter option assumes that enough memory is available for the VM.
+ *
+ * This method assumes that all files are present if required by specification and are properly named.
+ * See also [the GTFS reference](https://developers.google.com/transit/gtfs/reference#dataset_files).
+ * In particular, it does not verify whether required files are actually present, nor does it check conditions of
+ * conditionally required files.
  *
  * The generated SQL entities are not returned.
  * Use the [GtfsReader] implementations to obtain the generated entities.
@@ -90,9 +100,10 @@ fun importGtfsDataset(url: URL, inMemory: Boolean = false) {
 }
 
 /**
- * Import a GTFS dataset from a given [fileSystem].
+ * Import an entire GTFS dataset from a given [FileSystem].
+ *
  * This method assumes that all files are present if required by specification and are properly named.
- * See also [https://developers.google.com/transit/gtfs/reference#dataset_files].
+ * See also [the GTFS reference](https://developers.google.com/transit/gtfs/reference#dataset_files).
  * In particular, it does not verify whether required files are actually present, nor does it check conditions of
  * conditionally required files.
  *

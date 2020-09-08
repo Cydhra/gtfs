@@ -34,7 +34,7 @@ import java.io.PushbackInputStream
  * @author Gregory Pakosz
  * @version 1.0
  */
-class UnicodeBOMInputStream(inputStream: InputStream?) : InputStream() {
+internal class UnicodeBOMInputStream(inputStream: InputStream?) : InputStream() {
     /**
      * Type safe enumeration class that describes the different types of Unicode
      * BOMs.
