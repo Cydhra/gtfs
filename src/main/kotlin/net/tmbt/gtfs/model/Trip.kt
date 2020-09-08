@@ -1,13 +1,15 @@
 package net.tmbt.gtfs.model
 
-import net.tmbt.gtfs.model.ServiceIdentifier.Companion.fromCalendar
-import net.tmbt.gtfs.model.ServiceIdentifier.Companion.fromCalendarDate
+import net.tmbt.gtfs.model.Trip.ServiceIdentifier.Companion.fromCalendar
+import net.tmbt.gtfs.model.Trip.ServiceIdentifier.Companion.fromCalendarDate
 import net.tmbt.gtfs.util.ByOrdinal
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.not
 import org.jetbrains.exposed.sql.or
 import java.util.*
 
@@ -18,6 +20,14 @@ enum class TripDirection {
     companion object : ByOrdinal<TripDirection>(values())
 }
 
+/**
+ * Table representing `trips.txt` from GTFS. However, since GTFS specifies the `service_id` to be either a
+ * reference to [CalendarTable] or to [CalendarDateTable], two columns exist for this value.
+ * Exactly one of them must be present, the other one must be null. The [DAO][CalendarDate] exposes the columns
+ * through a pseudo union class.
+ *
+ * @see [Trip.ServiceIdentifier]
+ */
 object TripTable : IdTable<String>() {
     override val id: Column<EntityID<String>> = varchar("trip_id", MAX_IDENTIFIER_LENGTH).entityId()
 
@@ -38,7 +48,10 @@ object TripTable : IdTable<String>() {
     val bikesAllowed = enumeration("bikes_allowed", Availability::class).nullable()
 
     init {
-        check { serviceCalendar.isNotNull() or serviceCalendarDate.isNotNull() }
+        check {
+            (serviceCalendar.isNull() or serviceCalendarDate.isNull()) and
+                    not(serviceCalendar.isNull() and serviceCalendarDate.isNull())
+        }
     }
 }
 
@@ -49,34 +62,19 @@ class Trip(id: EntityID<String>) : Entity<String>(id) {
     private var serviceIdCalendarDate by CalendarDate optionalReferencedOn TripTable.serviceCalendarDate
 
     /**
-     * caches the value of [serviceId] so it returns the same instance as long as [serviceIdCalendar]
-     * and [serviceIdCalendarDate] are not changed
-     */
-    private var serviceIdCache: ServiceIdentifier? = null
-
-    /**
      * The service id as a union of a [Calendar] and a [CalendarDate], depending on which is present. One of them must
      * be present and they won't be both present.
      *
      * @see ServiceIdentifier
      */
-    // Though this is a delegated property, it is guaranteed to return the
-    // same instance of the union until it is replaced with a new value. This is done using the cache property above
     var serviceId: ServiceIdentifier
         get() {
-            // if no identifier union has been created (i.e. this instance has been retrieved freshly from database),
-            // create one
-            if (serviceIdCache != null) {
-                serviceIdCache =
-                    if (serviceIdCalendar != null)
-                        fromCalendar(serviceIdCalendar!!)
-                    else
-                        fromCalendarDate(serviceIdCalendarDate!!)
-            }
-            return serviceIdCache!!
+            return if (serviceIdCalendar != null)
+                ServiceIdentifier.fromCalendar(serviceIdCalendar!!)
+            else
+                ServiceIdentifier.fromCalendarDate(serviceIdCalendarDate!!)
         }
         set(value) {
-            serviceIdCache = value
             if (value.calendar.isPresent) {
                 serviceIdCalendar = value.calendar.get()
             } else {
@@ -93,27 +91,29 @@ class Trip(id: EntityID<String>) : Entity<String>(id) {
     var shape by TripTable.shape
     var wheelchair by TripTable.wheelchair
     var bikesAllowed by TripTable.bikesAllowed
-}
 
-/**
- * An effective union class of a [Calendar] and a [CalendarDate]. By invariant, exactly one of both instance is present.
- * Construct them via [fromCalendar] or [fromCalendarDate].
- */
-data class ServiceIdentifier private constructor(
-    val calendar: Optional<Calendar>,
-    val calendarDate: Optional<CalendarDate>
-) {
-    companion object {
-        /**
-         * Construct a service identifier from a [Calendar]
-         */
-        fun fromCalendar(calendar: Calendar): ServiceIdentifier =
-            ServiceIdentifier(Optional.of(calendar), Optional.empty())
+    /**
+     * A pseudo union class of a [Calendar] and a [CalendarDate]. By invariant, exactly one of both instance is present.
+     * Construct them via [fromCalendar] or [fromCalendarDate].
+     */
+    @Suppress("DataClassPrivateConstructor")
+    data class ServiceIdentifier private constructor(
+        val calendar: Optional<Calendar>,
+        val calendarDate: Optional<CalendarDate>
+    ) {
+        companion object {
+            /**
+             * Construct a service identifier from a [Calendar]
+             */
+            fun fromCalendar(calendar: Calendar): ServiceIdentifier =
+                ServiceIdentifier(Optional.of(calendar), Optional.empty())
 
-        /**
-         * Construct a service identifier from a [CalendarDate]
-         */
-        fun fromCalendarDate(calendarDate: CalendarDate): ServiceIdentifier =
-            ServiceIdentifier(Optional.empty(), Optional.of(calendarDate))
+            /**
+             * Construct a service identifier from a [CalendarDate]
+             */
+            fun fromCalendarDate(calendarDate: CalendarDate): ServiceIdentifier =
+                ServiceIdentifier(Optional.empty(), Optional.of(calendarDate))
+        }
     }
 }
+

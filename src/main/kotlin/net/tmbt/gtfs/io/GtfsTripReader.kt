@@ -3,6 +3,7 @@ package net.tmbt.gtfs.io
 import net.tmbt.gtfs.model.*
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.InputStream
@@ -22,7 +23,9 @@ class GtfsTripReader(inputStream: InputStream) : GtfsReader<String>(inputStream)
                 val calendarEntity = CalendarTable.select { CalendarTable.id eq serviceId }.firstOrNull()
                 if (calendarEntity == null) {
                     val calendarDateEntity =
-                        CalendarDateTable.select { CalendarDateTable.id eq serviceId }.firstOrNull()
+                        CalendarDateTable.select {
+                            CalendarDateTable.weakServiceId eq serviceId or (CalendarDateTable.referenceServiceId eq serviceId)
+                        }.firstOrNull()
                             ?: throw IllegalStateException("cannot find Calendar or CalendarDate with id \"$serviceId\"")
 
                     row[serviceCalendarDate] = calendarDateEntity[CalendarDateTable.id]
