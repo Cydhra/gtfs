@@ -108,7 +108,7 @@ fun importGtfsDataset(fileSystem: FileSystem) {
         readEntitiesFrom(fileSystem, "calendar.txt", ::GtfsCalendarReader)
         // calendar dates reader // opt
         // shapes reader // opt
-        // trips reader // req
+        readEntitiesFrom(fileSystem, "trips.txt", ::GtfsTripReader, required = true)
         readEntitiesFrom(fileSystem, "stop_times.txt", ::GtfsStopTimeReader, required = true)
         readEntitiesFrom(fileSystem, "fare_attributes.txt", ::GtfsFareAttributeReader)
         // fare rules reader // opt
