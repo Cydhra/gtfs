@@ -24,4 +24,7 @@ object CalendarDateTable : IdTable<String>() {
 
 class CalendarDate(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, CalendarDate>(CalendarDateTable)
+
+    var date by CalendarDateTable.date
+    var exceptionType by CalendarDateTable.exceptionType
 }
