@@ -27,6 +27,7 @@ fun updateDatabase() {
             RouteTable,
             CalendarTable,
             CalendarDateTable,
+            ShapeTable,
             ShapePointTable,
             TripTable,
             StopTimeTable,
@@ -118,7 +119,7 @@ fun importGtfsDataset(fileSystem: FileSystem) {
         readEntitiesFrom(fileSystem, "routes.txt", ::GtfsRoutesReader, required = true)
         readEntitiesFrom(fileSystem, "calendar.txt", ::GtfsCalendarReader)
         readEntitiesFrom(fileSystem, "calendar_dates.txt", ::GtfsCalendarDateReader)
-        // shapes reader // opt
+        readEntitiesFrom(fileSystem, "shapes.txt", ::GtfsShapeReader)
         readEntitiesFrom(fileSystem, "trips.txt", ::GtfsTripReader, required = true)
         readEntitiesFrom(fileSystem, "stop_times.txt", ::GtfsStopTimeReader, required = true)
         readEntitiesFrom(fileSystem, "fare_attributes.txt", ::GtfsFareAttributeReader)
