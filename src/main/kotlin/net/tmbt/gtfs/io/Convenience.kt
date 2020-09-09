@@ -125,7 +125,7 @@ fun importGtfsDataset(fileSystem: FileSystem) {
         readEntitiesFrom(fileSystem, "fare_attributes.txt", ::GtfsFareAttributeReader)
         readEntitiesFrom(fileSystem, "fare_rules.txt", ::GtfsFareRuleReader)
         readEntitiesFrom(fileSystem, "frequencies.txt", ::GtfsFrequenciesReader)
-        // transfers reader // opt
+        readEntitiesFrom(fileSystem, "transfers.txt", ::GtfsTransferReader)
         // pathways reader // opt
         // feed info reader TODO: this is not a table, is it?
         // translations // opt
