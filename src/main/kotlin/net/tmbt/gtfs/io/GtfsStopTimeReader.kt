@@ -2,33 +2,30 @@ package net.tmbt.gtfs.io
 
 import net.tmbt.gtfs.model.*
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.statements.InsertStatement
-import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.InputStream
 
 class GtfsStopTimeReader(inputStream: InputStream) : GtfsReader<Int>(inputStream) {
     override fun insertEntity(entries: Map<String, String>): EntityID<Int> {
         return transaction {
-            val entityId = InsertStatement<Number>(StopTimeTable).apply {
-                this[StopTimeTable.trip] = entries["trip_id"]?.let { EntityID(it, TripTable) }
+            StopTimeTable.insertAndGetId { row ->
+                row[trip] = entries["trip_id"]?.let { EntityID(it, TripTable) }
                     ?: error("cannot create stop time without trip_id")
-                this[StopTimeTable.stop] = entries["stop_id"]?.let { EntityID(it, StopTable) }
+                row[stop] = entries["stop_id"]?.let { EntityID(it, StopTable) }
                     ?: error("cannot create stop time without stop_id")
-                this[StopTimeTable.arrivalTime] = entries["arrival_time"]
-                this[StopTimeTable.departureTime] = entries["departure_time"]
-                this[StopTimeTable.stopSequence] =
+                row[arrivalTime] = entries["arrival_time"]
+                row[departureTime] = entries["departure_time"]
+                row[stopSequence] =
                     entries["stop_sequence"]?.toInt() ?: error("cannot create stop time without stop_sequence")
-                this[StopTimeTable.headSign] = entries["stop_headsign"]
-                this[StopTimeTable.pickupType] = PickupMode.byOrdinalOrNull(entries["pickup_type"]?.toInt())
-                this[StopTimeTable.dropOffType] = PickupMode.byOrdinalOrNull(entries["drop_off_type"]?.toInt())
-                this[StopTimeTable.continuousPickup] = PickupMode.byOrdinalOrNull(entries["continuous_pickup"]?.toInt())
-                this[StopTimeTable.continuous] = PickupMode.byOrdinalOrNull(entries["continuous_drop_off"]?.toInt())
-                this[StopTimeTable.shapeDist] = entries["shape_dist_traveled"]?.toFloat()
-                this[StopTimeTable.timePoint] = TimeMode.byOrdinalOrNull(entries["timepoint"]?.toInt())
-            }.execute(TransactionManager.current())!!
-
-            return@transaction EntityID(entityId, StopTimeTable)
+                row[headSign] = entries["stop_headsign"]
+                row[pickupType] = PickupMode.byOrdinalOrNull(entries["pickup_type"]?.toInt())
+                row[dropOffType] = PickupMode.byOrdinalOrNull(entries["drop_off_type"]?.toInt())
+                row[continuousPickup] = PickupMode.byOrdinalOrNull(entries["continuous_pickup"]?.toInt())
+                row[continuous] = PickupMode.byOrdinalOrNull(entries["continuous_drop_off"]?.toInt())
+                row[shapeDist] = entries["shape_dist_traveled"]?.toFloat()
+                row[timePoint] = TimeMode.byOrdinalOrNull(entries["timepoint"]?.toInt())
+            }
         }
     }
 }
