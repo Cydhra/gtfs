@@ -43,7 +43,7 @@ internal class ConvenienceKtTest {
                 RouteTable,
                 CalendarTable,
                 CalendarDateTable,
-                ShapeTable,
+                ShapePointTable,
                 TripTable,
                 StopTimeTable,
                 FareAttributeTable,

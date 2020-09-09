@@ -27,7 +27,7 @@ fun updateDatabase() {
             RouteTable,
             CalendarTable,
             CalendarDateTable,
-            ShapeTable,
+            ShapePointTable,
             TripTable,
             StopTimeTable,
             FareAttributeTable,
