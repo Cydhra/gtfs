@@ -8,17 +8,17 @@ A user thus may freely choose any supported SQL driver and provide a matching da
 # Usage
 The client must provide a database connection and a transaction before calling the library.
 For example, this is how to provide an in-memory database using [H2](https://h2database.com/html/main.html).
-```Kotlin
+````Kotlin
 Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver", user = "root", password = "")
-```
+````
 Consult the [Exposed documentation](https://github.com/JetBrains/Exposed/wiki) for more information.
 
 To read a single GTFS file, use the corresponding reader class:
-```Kotlin
+````Kotlin
 GtfsAgencyReader(Files.newInputStream(File("path/to/file"))).use { reader ->
     transaction { reader.readRemainingEntities() }
  }
-```
+````
 It mainly provides the methods ``nextEntity()`` and ``readRemainingEntities()`` 
 which will read a single entity (and respectively all remaining entities) of the file into database
 and return the corresponding ``EntityID``.
@@ -26,7 +26,7 @@ Keep in mind, that many GTFS tables reference other tables, and your SQL model w
 into the database, if the referenced records are not available.
 
 To read an entire dataset into your database, you can use the convenience methods provided as follows:
-```Kotlin
+````Kotlin
 transaction {
     updateDatabase() // create all missing tables and columns in the connected database
     importGtfsDataset(File("path/to/dataset").toPath()) // import from a folder
@@ -34,9 +34,9 @@ transaction {
     // import from a zip file
     importGtfsDataset(URL("https://projekte.kvv-efa.de/GTFS/google_transit.zip"), inMemory = false)
 }
-```
+````
 
-For further documentation, you can generate the Kotlin Doc using ``gradle dokkaHtml`.`
+For further documentation, you can generate the Kotlin Doc using ``gradle dokkaHtml``.
 
 # Future Improvements
 - feed_info.txt should contain only one entry to my knowledge. 
