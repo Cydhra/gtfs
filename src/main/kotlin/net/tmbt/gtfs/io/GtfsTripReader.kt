@@ -11,7 +11,7 @@ import java.io.InputStream
 class GtfsTripReader(inputStream: InputStream) : GtfsReader<String>(inputStream) {
     override fun insertEntity(entries: Map<String, String>): EntityID<String> {
         return transaction {
-            val entityId = EntityID(entries["trip_id"] ?: error("cannot create trip without trip id"), RouteTable)
+            val entityId = EntityID(entries["trip_id"] ?: error("cannot create trip without trip id"), TripTable)
 
             TripTable.insert { row ->
                 row[id] = entityId
